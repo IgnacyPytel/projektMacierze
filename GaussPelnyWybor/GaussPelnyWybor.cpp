@@ -7,7 +7,32 @@
 #include <iostream>
 
 
-std::pair<int, int> GaussPelnyWybor::znajdzPivot(int poczatek) {
+GaussPelnyWybor::GaussPelnyWybor() {
+    //macierz A to macierz wartosci z X
+    A = {{0, 0}, {0, 0}};
+    //wektor b to wektor wartosci "rownosci"
+    b = {0, 0};
+}
+
+GaussPelnyWybor::GaussPelnyWybor(const std::vector<std::vector<double>>& A,
+                                 const std::vector<double>& b) {
+    this->A = A;
+    this->b = b;
+}
+
+void GaussPelnyWybor::zamienWiersze(int wiersz1, int wiersz2) {
+    std::swap(A[wiersz1], A[wiersz2]);
+    std::swap(b[wiersz1], b[wiersz2]);
+}
+
+
+void GaussPelnyWybor::zamienKolumny(int kolumna1, int kolumna2) {
+    for (auto & i : A) {
+        std::swap(i[kolumna1], i[kolumna2]);
+    }
+}
+
+std::pair<int, int> GaussPelnyWybor::znajdzMaksymalnyElement(int poczatek) {
 
     double maxElement = std::abs(A[poczatek][poczatek]);
     int indeksMaksymalnegoElementuWiersza = poczatek;
@@ -29,19 +54,11 @@ std::pair<int, int> GaussPelnyWybor::znajdzPivot(int poczatek) {
     return {indeksMaksymalnegoElementuWiersza, indeksMaksymalnegoElementuKolumny};
 }
 
-
-void GaussPelnyWybor::zamienWiersze(int wiersz1, int wiersz2) {
-    std::swap(A[wiersz1], A[wiersz2]);
-    std::swap(b[wiersz1], b[wiersz2]);
-}
-
-
-void GaussPelnyWybor::zamienKolumny(int kolumna1, int kolumna2) {
-    for (auto & i : A) {
-        std::swap(i[kolumna1], i[kolumna2]);
+void GaussPelnyWybor::wypiszRozwiazanie(const std::vector<double>& x) {
+    for (int i = 0; i < x.size(); i++) {
+        std::cout << "x" << i << " = " << x[i] << std::endl;
     }
 }
-
 
 void GaussPelnyWybor::eliminacjaGaussa(int kolumna) {
     unsigned long long rozmiarMacierzy = A.size();
@@ -94,8 +111,15 @@ void GaussPelnyWybor::rozwiaz() {
     }
 
     for (int i = 0; i < rozmiarMacierzy; i++) {
+        if (std::abs(A[i][i]) <= epsilon) {
+            throw std::runtime_error("Element na glownej przekatnej jest rowny zero");
+        }
+    }
 
-        auto [indeksMaksymalnegoElementuWiersza, indeksMaksymalnegoElementuKolumny] = znajdzPivot(i);
+    for (int i = 0; i < rozmiarMacierzy; i++) {
+
+        auto [indeksMaksymalnegoElementuWiersza,
+                indeksMaksymalnegoElementuKolumny] = znajdzMaksymalnyElement(i);
 
         zamienWiersze(indeksMaksymalnegoElementuWiersza, i);
         zamienKolumny(indeksMaksymalnegoElementuKolumny, i);
@@ -115,20 +139,6 @@ void GaussPelnyWybor::rozwiaz() {
 
     }
 
+    wypiszRozwiazanie(x);
 
-    for (int i = 0; i < rozmiarMacierzy; i++) {
-
-        std::cout << "x" << i << " = " << x[i] << std::endl;
-
-    }
-}
-GaussPelnyWybor::GaussPelnyWybor() {
-    //macierz A to macierz wartosci z X
-    A = {{0, 0}, {0, 0}};
-    //wektor b to wektor wartosci "rownosci"
-    b = {0, 0};
-}
-GaussPelnyWybor::GaussPelnyWybor(const std::vector<std::vector<double>>& A, const std::vector<double>& b) {
-    this->A = A;
-    this->b = b;
 }

@@ -9,11 +9,13 @@
 
 class GaussPelnyWybor : public MetodaGaussa {
 public:
+
     GaussPelnyWybor();
     GaussPelnyWybor(const std::vector<std::vector<double>>& A, const std::vector<double>& b);
-    std::pair<int, int> znajdzPivot(int start);
+    std::pair<int, int> znajdzMaksymalnyElement(int start);
     void zamienWiersze(int wiersz1, int wiersz2);
     void zamienKolumny(int kolumna1, int kolumna2);
+    void wypiszRozwiazanie(const std::vector<double>& x) override;
     void eliminacjaGaussa(int kolumna) override;
     std::vector<double> rozwiazUklad() override;
     void rozwiaz() override;

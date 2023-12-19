@@ -9,6 +9,7 @@
 
 class GaussPodstawowy : public MetodaGaussa {
 public:
+
     GaussPodstawowy(const std::vector<std::vector<double>>& A, const std::vector<double>& b);
     GaussPodstawowy();
     void eliminacjaGaussa(int kolumna) override;

@@ -7,9 +7,11 @@
 
 class GaussWyborKolumny : public MetodaGaussa {
 public:
+
     GaussWyborKolumny(const std::vector<std::vector<double>>& A, const std::vector<double>& b);
     GaussWyborKolumny();
     int znajdzMaksymalnyElement(int kolumna);
+    void wypiszRozwiazanie(const std::vector<double>& x) override;
     void eliminacjaGaussa(int kolumna) override;
     std::vector<double> rozwiazUklad() override;
     void rozwiaz() override;

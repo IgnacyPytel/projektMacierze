@@ -7,45 +7,50 @@
 
 
 void wprowadzDaneWejsciowe(std::vector<std::vector<double>>& A, std::vector<double>& b) {
-    int n;
+    int iloscRownan;
     std::cout << "Wpisz ilosc rownan: ";
-    std::cin >> n;
+    std::cin >> iloscRownan;
 
-    A.resize(n, std::vector<double>(n));
-    b.resize(n);
+    A.resize(iloscRownan, std::vector<double>(iloscRownan));
+    b.resize(iloscRownan);
 
     std::cout << "Podaj wspolczynniki przy x'ach:\n";
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
+    for (int i = 0; i < iloscRownan; i++) {
+        for (int j = 0; j < iloscRownan; j++) {
             std::cin >> A[i][j];
         }
     }
 
     std::cout << "Podaj wektor B:\n";
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < iloscRownan; i++) {
         std::cin >> b[i];
     }
 }
 
 int main() {
-    int choice;
-    std::cout << "Wybierz metode:\n1. GaussPodstawowy\n2. GaussWyborKolumny\n3. GaussPelnyWybor\n";
-    std::cin >> choice;
+    int wybor;
+    std::cout << "Wybierz metode:\n"
+                 "1. GaussPodstawowy\n"
+                 "2. GaussWyborKolumny\n"
+                 "3. GaussPelnyWybor\n";
+    std::cin >> wybor;
 
     std::vector<std::vector<double>> A;
     std::vector<double> b;
 
-    int inputChoice;
-    std::cout << "Czy chcesz wprowadzic dane wejsciowe?\n1. Tak\n2. Nie\n";
-    std::cin >> inputChoice;
+    int wyborWprowadzania;
+    std::cout << "Czy chcesz wprowadzic dane wejsciowe?\n"
+                 "1. Tak\n"
+                 "2. Nie\n";
+    std::cin >> wyborWprowadzania;
 
-    if (inputChoice == 1) {
+    if (wyborWprowadzania == 1) {
         wprowadzDaneWejsciowe(A, b);
     } else {
         // tutaj na testy trzeba dodac
     }
 
-    switch (choice) {
+    switch (wybor) {
         case 1: {
             GaussPodstawowy gp(A, b);
             gp.rozwiaz();

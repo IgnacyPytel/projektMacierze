@@ -7,6 +7,19 @@
 #include <algorithm>
 
 
+GaussWyborKolumny::GaussWyborKolumny(){
+    //macierz A to macierz wartosci z X
+    A = {{0, 0}, {0, 0}};
+    //wektor b to wektor wartosci "rownosci"
+    b = {0, 0};
+}
+
+GaussWyborKolumny::GaussWyborKolumny(const std::vector<std::vector<double>>& A,
+                                     const std::vector<double>& b) {
+    this->A = A;
+    this->b = b;
+}
+
 int GaussWyborKolumny::znajdzMaksymalnyElement(int kolumna) {
 
     double maxElement = std::abs(A[kolumna][kolumna]);
@@ -21,6 +34,12 @@ int GaussWyborKolumny::znajdzMaksymalnyElement(int kolumna) {
         }
     }
     return indeksMaksymalnegoElementu;
+}
+
+void GaussWyborKolumny::wypiszRozwiazanie(const std::vector<double>& x) {
+    for (int i = 0; i < x.size(); i++) {
+        std::cout << "x" << i << " = " << x[i] << std::endl;
+    }
 }
 
 
@@ -70,6 +89,12 @@ void GaussWyborKolumny::rozwiaz() {
     unsigned long long rozmiarMacierzy = A.size();
 
     for (int i = 0; i < rozmiarMacierzy; i++) {
+        if (std::abs(A[i][i]) <= epsilon) {
+            throw std::runtime_error("Element na glownej przekatnej jest rowny zero");
+        }
+    }
+
+    for (int i = 0; i < rozmiarMacierzy; i++) {
 
         int maxRow = znajdzMaksymalnyElement(i);
         std::swap(A[maxRow], A[i]);
@@ -80,21 +105,6 @@ void GaussWyborKolumny::rozwiaz() {
 
 
     std::vector<double> x = rozwiazUklad();
+    wypiszRozwiazanie(x);
 
-
-    for (int i = 0; i < rozmiarMacierzy; i++) {
-
-        std::cout << "x" << i << " = " << x[i] << std::endl;
-
-    }
-}
-GaussWyborKolumny::GaussWyborKolumny(){
-    //macierz A to macierz wartosci z X
-    A = {{0, 0}, {0, 0}};
-    //wektor b to wektor wartosci "rownosci"
-    b = {0, 0};
-}
-GaussWyborKolumny::GaussWyborKolumny(const std::vector<std::vector<double>>& A, const std::vector<double>& b) {
-    this->A = A;
-    this->b = b;
 }
