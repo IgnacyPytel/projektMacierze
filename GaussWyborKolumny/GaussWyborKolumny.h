@@ -1,6 +1,3 @@
-//
-// Created by pytlu on 18.12.2023.
-//
 
 #ifndef PROJEKTMACIERZE_GAUSSWYBORKOLUMNY_H
 #define PROJEKTMACIERZE_GAUSSWYBORKOLUMNY_H
@@ -12,8 +9,8 @@ class GaussWyborKolumny : public MetodaGaussa {
 public:
     GaussWyborKolumny(const std::vector<std::vector<double>>& A, const std::vector<double>& b);
     GaussWyborKolumny();
-    int znajdzMaksymalnyElement(int col);
-    void eliminacjaGaussa(int col) override;
+    int znajdzMaksymalnyElement(int kolumna);
+    void eliminacjaGaussa(int kolumna) override;
     std::vector<double> rozwiazUklad() override;
     void rozwiaz() override;
 };

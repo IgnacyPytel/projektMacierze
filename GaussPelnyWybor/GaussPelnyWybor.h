@@ -14,7 +14,7 @@ public:
     std::pair<int, int> znajdzPivot(int start);
     void zamienWiersze(int wiersz1, int wiersz2);
     void zamienKolumny(int kolumna1, int kolumna2);
-    void eliminacjaGaussa(int col) override;
+    void eliminacjaGaussa(int kolumna) override;
     std::vector<double> rozwiazUklad() override;
     void rozwiaz() override;
 };

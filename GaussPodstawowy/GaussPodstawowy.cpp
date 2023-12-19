@@ -6,29 +6,45 @@
 #include <algorithm>
 #include <iostream>
 
-void GaussPodstawowy::eliminacjaGaussa(int col) {
-    unsigned long long n = A.size();
-    for (int k = col + 1; k < n; k++) {
-        double c = -A[k][col] / A[col][col];
-        for (int j = col; j < n; j++) {
-            if (col == j) {
+void GaussPodstawowy::eliminacjaGaussa(int kolumna) {
+
+    unsigned long long rozmiarMacierzy = A.size();
+
+    for (int k = kolumna + 1; k < rozmiarMacierzy; k++) {
+
+        double c = -A[k][kolumna] / A[kolumna][kolumna];
+
+        for (int j = kolumna; j < rozmiarMacierzy; j++) {
+            if (kolumna == j) {
+
                 A[k][j] = 0;
+
             } else {
-                A[k][j] += c * A[col][j];
+
+                A[k][j] += c * A[kolumna][j];
+
             }
         }
-        b[k] += c * b[col];
+
+        b[k] += c * b[kolumna];
+
     }
 }
 
 
 std::vector<double> GaussPodstawowy::rozwiazUklad() {
-    unsigned long long n = A.size();
-    std::vector<double> x(n);
-    for (int i = n - 1; i >= 0; i--) {
+
+    unsigned long long rozmiarMacierzy = A.size();
+    std::vector<double> x(rozmiarMacierzy);
+
+    for (int i = rozmiarMacierzy - 1; i >= 0; i--) {
+
         x[i] = b[i] / A[i][i];
+
         for (int k = i - 1; k >= 0; k--) {
+
             b[k] -= A[k][i] * x[i];
+
         }
     }
     return x;
@@ -37,17 +53,23 @@ std::vector<double> GaussPodstawowy::rozwiazUklad() {
 
 void GaussPodstawowy::wypiszRozwiazanie(const std::vector<double>& x) {
     for (int i = 0; i < x.size(); i++) {
+
         std::cout << "x" << i << " = " << x[i] << std::endl;
+
     }
 }
 
 void GaussPodstawowy::rozwiaz() {
-    unsigned long long n = A.size();
-    for (int i = 0; i < n; i++) {
+
+    unsigned long long rozmiarMacierzy = A.size();
+
+    for (int i = 0; i < rozmiarMacierzy; i++) {
 
         eliminacjaGaussa(i);
     }
+
     std::vector<double> x = rozwiazUklad();
+
     wypiszRozwiazanie(x);
 }
 GaussPodstawowy::GaussPodstawowy(){

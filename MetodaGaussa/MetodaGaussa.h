@@ -16,7 +16,7 @@ public:
     MetodaGaussa();
     MetodaGaussa(const std::vector<std::vector<double>>& A, const std::vector<double>& b);
 
-    virtual void eliminacjaGaussa(int col);
+    virtual void eliminacjaGaussa(int kolumna);
 
     virtual std::vector<double> rozwiazUklad();
 

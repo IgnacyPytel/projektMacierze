@@ -7,20 +7,26 @@
 #include <iostream>
 
 
-std::pair<int, int> GaussPelnyWybor::znajdzPivot(int start) {
-    double maxEl = std::abs(A[start][start]);
-    int maxRow = start;
-    int maxCol = start;
-    for (int k = start; k < A.size(); k++) {
-        for (int j = start; j < A.size(); j++) {
-            if (std::abs(A[k][j]) > maxEl) {
-                maxEl = std::abs(A[k][j]);
-                maxRow = k;
-                maxCol = j;
+std::pair<int, int> GaussPelnyWybor::znajdzPivot(int poczatek) {
+
+    double maxElement = std::abs(A[poczatek][poczatek]);
+    int indeksMaksymalnegoElementuWiersza = poczatek;
+    int indeksMaksymalnegoElementuKolumny = poczatek;
+
+    for (int k = poczatek; k < A.size(); k++) {
+        for (int j = poczatek; j < A.size(); j++) {
+            if (std::abs(A[k][j]) > maxElement) {
+
+                maxElement = std::abs(A[k][j]);
+
+                indeksMaksymalnegoElementuWiersza = k;
+
+                indeksMaksymalnegoElementuKolumny = j;
+
             }
         }
     }
-    return {maxRow, maxCol};
+    return {indeksMaksymalnegoElementuWiersza, indeksMaksymalnegoElementuKolumny};
 }
 
 
@@ -37,45 +43,63 @@ void GaussPelnyWybor::zamienKolumny(int kolumna1, int kolumna2) {
 }
 
 
-void GaussPelnyWybor::eliminacjaGaussa(int col) {
-    unsigned long long n = A.size();
-    for (int k = col + 1; k < n; k++) {
-        double c = -A[k][col] / A[col][col];
-        for (int j = col; j < n; j++) {
-            if (col == j) {
+void GaussPelnyWybor::eliminacjaGaussa(int kolumna) {
+    unsigned long long rozmiarMacierzy = A.size();
+
+    for (int k = kolumna + 1; k < rozmiarMacierzy; k++) {
+
+        double c = -A[k][kolumna] / A[kolumna][kolumna];
+
+        for (int j = kolumna; j < rozmiarMacierzy; j++) {
+            if (kolumna == j) {
+
                 A[k][j] = 0;
+
             } else {
-                A[k][j] += c * A[col][j];
+
+                A[k][j] += c * A[kolumna][j];
+
             }
         }
-        b[k] += c * b[col];
+        b[k] += c * b[kolumna];
     }
 }
 std::vector<double> GaussPelnyWybor::rozwiazUklad() {
-    unsigned long long int n = A.size();
-    std::vector<double> x(n);
-    for (int i = n - 1; i >= 0; i--) {
+
+    unsigned long long int rozmiarMacierzy = A.size();
+    std::vector<double> x(rozmiarMacierzy);
+
+    for (int i = rozmiarMacierzy - 1; i >= 0; i--) {
+
         x[i] = b[i] / A[i][i];
+
         for (int k = i - 1; k >= 0; k--) {
+
             b[k] -= A[k][i] * x[i];
+
         }
     }
     return x;
 }
 
 void GaussPelnyWybor::rozwiaz() {
-    unsigned long long int n = A.size();
-    std::vector<int> P(n);
-    for (int i = 0; i < n; i++) {
+
+    unsigned long long int rozmiarMacierzy = A.size();
+    std::vector<int> P(rozmiarMacierzy);
+
+    for (int i = 0; i < rozmiarMacierzy; i++) {
+
         P[i] = i;
+
     }
 
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < rozmiarMacierzy; i++) {
 
-        auto [maxRow, maxCol] = znajdzPivot(i);
-        zamienWiersze(maxRow, i);
-        zamienKolumny(maxCol, i);
-        std::swap(P[maxCol], P[i]);
+        auto [indeksMaksymalnegoElementuWiersza, indeksMaksymalnegoElementuKolumny] = znajdzPivot(i);
+
+        zamienWiersze(indeksMaksymalnegoElementuWiersza, i);
+        zamienKolumny(indeksMaksymalnegoElementuKolumny, i);
+        std::swap(P[indeksMaksymalnegoElementuKolumny], P[i]);
 
 
         eliminacjaGaussa(i);
@@ -83,16 +107,19 @@ void GaussPelnyWybor::rozwiaz() {
 
 
     std::vector<double> x = rozwiazUklad();
-
-
     std::vector<double> y = x;
-    for (int i = 0; i < n; i++) {
+
+    for (int i = 0; i < rozmiarMacierzy; i++) {
+
         x[P[i]] = y[i];
+
     }
 
 
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < rozmiarMacierzy; i++) {
+
         std::cout << "x" << i << " = " << x[i] << std::endl;
+
     }
 }
 GaussPelnyWybor::GaussPelnyWybor() {
