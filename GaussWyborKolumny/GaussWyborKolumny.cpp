@@ -7,11 +7,14 @@
 #include <algorithm>
 
 
-GaussWyborKolumny::GaussWyborKolumny(){
-    //macierz A to macierz wartosci z X
-    A = {{0, 0}, {0, 0}};
-    //wektor b to wektor wartosci "rownosci"
-    b = {0, 0};
+void GaussWyborKolumny::daneTestoweKolumny(std::vector<std::vector<double>>& A, std::vector<double>& b) {
+    //uklad rownan
+    A = {{1, 1, 1},
+         {2, 1, 5},
+         {1, -1, -1}};
+
+    //wektor wyrazow wolnych
+    b = {1, 0, 0};
 }
 
 GaussWyborKolumny::GaussWyborKolumny(const std::vector<std::vector<double>>& A,

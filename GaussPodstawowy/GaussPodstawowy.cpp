@@ -6,12 +6,16 @@
 #include <algorithm>
 #include <iostream>
 
-GaussPodstawowy::GaussPodstawowy(){
-    //macierz A to macierz wartosci z X
-    A = {{0, 0}, {0, 0}};
-    //wektor b to wektor wartosci "rownosci"
-    b = {0, 0};
+void GaussPodstawowy::daneTestowePodstawowy(std::vector<std::vector<double>>& A, std::vector<double>& b) {
+    //uklad rownan
+    A = {{2, -2, -2},
+         {5, 2, 3}, {
+        -1, 3, 4}};
+
+    //wektor wyrazow wolnych
+    b = {-2, 8, 4};
 }
+
 GaussPodstawowy::GaussPodstawowy(const std::vector<std::vector<double>>& A,
                                  const std::vector<double>& b) {
     this->A = A;

@@ -7,11 +7,16 @@
 #include <iostream>
 
 
-GaussPelnyWybor::GaussPelnyWybor() {
-    //macierz A to macierz wartosci z X
-    A = {{0, 0}, {0, 0}};
-    //wektor b to wektor wartosci "rownosci"
-    b = {0, 0};
+void GaussPelnyWybor::daneTestowePelny(std::vector<std::vector<double>>& A, std::vector<double>& b) {
+    //uklad rownan
+    A = {{14, -13, 3, -16, -42},
+         {3.5, -18, 13, -23.75, -21},
+         {3.5, 3, -5.25, 9.25, 10.5},
+         {2, 14.5, -10.5, 18.5, 21},
+         {1.5, 6.75, -9.25, 17, -10.5}};
+
+    //wektor wyrazow wolnych
+    b = {-37, -5.5, 12.5, 23.5, -45.25};
 }
 
 GaussPelnyWybor::GaussPelnyWybor(const std::vector<std::vector<double>>& A,
