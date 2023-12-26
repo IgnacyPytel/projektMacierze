@@ -7,7 +7,8 @@
 #include <algorithm>
 
 
-void GaussWyborKolumny::daneTestoweKolumny(std::vector<std::vector<double>>& A, std::vector<double>& b) {
+void GaussWyborKolumny::daneTestoweKolumny(std::vector<std::vector<double>>& A,
+                                           std::vector<double>& b) {
     //uklad rownan
     A = {{1, 1, 1},
          {2, 1, 5},
@@ -23,19 +24,31 @@ GaussWyborKolumny::GaussWyborKolumny(const std::vector<std::vector<double>>& A,
     this->b = b;
 }
 
+void GaussWyborKolumny::wypiszMacierz() const {
+    for (const auto& row : A) {
+        for (const auto& element : row) {
+
+            std::cout << element << "\t";
+
+        }
+        std::cout << '\n';
+    }
+}
+
 int GaussWyborKolumny::znajdzMaksymalnyElement(int kolumna) {
 
-    double maxElement = std::abs(A[kolumna][kolumna]);
+    double maxElementKolumna = std::abs(A[kolumna][kolumna]);
     int indeksMaksymalnegoElementu = kolumna;
 
     for (int k = kolumna + 1; k < A.size(); k++) {
-        if (std::abs(A[k][kolumna]) > maxElement) {
+        if (std::abs(A[k][kolumna]) > maxElementKolumna) {
 
-            maxElement = std::abs(A[k][kolumna]);
+            maxElementKolumna = std::abs(A[k][kolumna]);
             indeksMaksymalnegoElementu = k;
 
         }
     }
+    std::cout << "Maksymalny element: " << maxElementKolumna << std::endl;
     return indeksMaksymalnegoElementu;
 }
 
@@ -90,7 +103,7 @@ std::vector<double> GaussWyborKolumny::rozwiazUklad() {
 
 void GaussWyborKolumny::rozwiaz() {
     unsigned long long rozmiarMacierzy = A.size();
-
+    // sprawdzanie zgodnie z zalozeniem uzywajac epsilona
     for (int i = 0; i < rozmiarMacierzy; i++) {
         if (std::abs(A[i][i]) <= epsilon) {
             throw std::runtime_error("Element na glownej przekatnej jest rowny zero");
@@ -104,6 +117,8 @@ void GaussWyborKolumny::rozwiaz() {
         std::swap(b[maxRow], b[i]);
 
         eliminacjaGaussa(i);
+        std::cout << "Krok " << i+1 << ": " << std::endl;
+        wypiszMacierz();
     }
 
 

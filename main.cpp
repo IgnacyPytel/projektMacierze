@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-#include "MetodaGaussa/MetodaGaussa.h"
 #include "GaussPodstawowy/GaussPodstawowy.h"
 #include "GaussWyborKolumny/GaussWyborKolumny.h"
 #include "GaussPelnyWybor/GaussPelnyWybor.h"
@@ -10,6 +9,13 @@ void wprowadzDaneWejsciowe(std::vector<std::vector<double>>& A, std::vector<doub
     int iloscRownan;
     std::cout << "Wpisz ilosc rownan: ";
     std::cin >> iloscRownan;
+
+
+    if (iloscRownan <= 0) {
+        std::cout << "Nieodpowiednia ilosc rownan\n";
+        return;
+    }
+
 
     A.resize(iloscRownan, std::vector<double>(iloscRownan));
     b.resize(iloscRownan);

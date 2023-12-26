@@ -6,11 +6,12 @@
 #include <algorithm>
 #include <iostream>
 
-void GaussPodstawowy::daneTestowePodstawowy(std::vector<std::vector<double>>& A, std::vector<double>& b) {
+void GaussPodstawowy::daneTestowePodstawowy(std::vector<std::vector<double>>& A,
+                                            std::vector<double>& b) {
     //uklad rownan
     A = {{2, -2, -2},
-         {5, 2, 3}, {
-        -1, 3, 4}};
+         {5, 2, 3},
+         {-1, 3, 4}};
 
     //wektor wyrazow wolnych
     b = {-2, 8, 4};
@@ -20,6 +21,17 @@ GaussPodstawowy::GaussPodstawowy(const std::vector<std::vector<double>>& A,
                                  const std::vector<double>& b) {
     this->A = A;
     this->b = b;
+}
+
+void GaussPodstawowy::wypiszMacierz() const {
+    for (const auto& row : A) {
+        for (const auto& element : row) {
+
+            std::cout << element << "\t";
+
+        }
+        std::cout << '\n';
+    }
 }
 
 void GaussPodstawowy::wypiszRozwiazanie(const std::vector<double>& x) {
@@ -83,6 +95,8 @@ void GaussPodstawowy::rozwiaz() {
     for (int i = 0; i < rozmiarMacierzy; i++) {
 
         eliminacjaGaussa(i);
+        std::cout << "Krok " << i+1 << ": " << std::endl;
+        wypiszMacierz();
     }
 
     std::vector<double> x = rozwiazUklad();

@@ -4,6 +4,7 @@
 
 #ifndef PROJEKTMACIERZE_METODAGAUSSA_H
 #define PROJEKTMACIERZE_METODAGAUSSA_H
+#pragma once
 
 #include <vector>
 

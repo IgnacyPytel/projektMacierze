@@ -7,7 +7,8 @@
 #include <iostream>
 
 
-void GaussPelnyWybor::daneTestowePelny(std::vector<std::vector<double>>& A, std::vector<double>& b) {
+void GaussPelnyWybor::daneTestowePelny(std::vector<std::vector<double>>& A,
+                                       std::vector<double>& b) {
     //uklad rownan
     A = {{14, -13, 3, -16, -42},
          {3.5, -18, 13, -23.75, -21},
@@ -25,20 +26,34 @@ GaussPelnyWybor::GaussPelnyWybor(const std::vector<std::vector<double>>& A,
     this->b = b;
 }
 
+void GaussPelnyWybor::wypiszMacierz() const {
+    for (const auto& row : A) {
+        for (const auto& element : row) {
+
+            std::cout << element << "\t";
+
+        }
+        std::cout << '\n';
+    }
+}
+
 void GaussPelnyWybor::zamienWiersze(int wiersz1, int wiersz2) {
+
     std::swap(A[wiersz1], A[wiersz2]);
     std::swap(b[wiersz1], b[wiersz2]);
+
 }
 
 
 void GaussPelnyWybor::zamienKolumny(int kolumna1, int kolumna2) {
     for (auto & i : A) {
+
         std::swap(i[kolumna1], i[kolumna2]);
+
     }
 }
 
 std::pair<int, int> GaussPelnyWybor::znajdzMaksymalnyElement(int poczatek) {
-
     double maxElement = std::abs(A[poczatek][poczatek]);
     int indeksMaksymalnegoElementuWiersza = poczatek;
     int indeksMaksymalnegoElementuKolumny = poczatek;
@@ -48,20 +63,22 @@ std::pair<int, int> GaussPelnyWybor::znajdzMaksymalnyElement(int poczatek) {
             if (std::abs(A[k][j]) > maxElement) {
 
                 maxElement = std::abs(A[k][j]);
-
                 indeksMaksymalnegoElementuWiersza = k;
-
                 indeksMaksymalnegoElementuKolumny = j;
 
             }
         }
     }
-    return {indeksMaksymalnegoElementuWiersza, indeksMaksymalnegoElementuKolumny};
+    std::cout << "Maksymalny element: " << maxElement << std::endl;
+    return {indeksMaksymalnegoElementuWiersza,
+            indeksMaksymalnegoElementuKolumny};
 }
 
 void GaussPelnyWybor::wypiszRozwiazanie(const std::vector<double>& x) {
     for (int i = 0; i < x.size(); i++) {
+
         std::cout << "x" << i << " = " << x[i] << std::endl;
+
     }
 }
 
@@ -105,7 +122,6 @@ std::vector<double> GaussPelnyWybor::rozwiazUklad() {
 }
 
 void GaussPelnyWybor::rozwiaz() {
-
     unsigned long long int rozmiarMacierzy = A.size();
     std::vector<int> P(rozmiarMacierzy);
 
@@ -115,9 +131,12 @@ void GaussPelnyWybor::rozwiaz() {
 
     }
 
+    // sprawdzanie zgodnie z zalozeniem uzywajac epsilona
     for (int i = 0; i < rozmiarMacierzy; i++) {
         if (std::abs(A[i][i]) <= epsilon) {
+
             throw std::runtime_error("Element na glownej przekatnej jest rowny zero");
+
         }
     }
 
@@ -129,12 +148,11 @@ void GaussPelnyWybor::rozwiaz() {
         zamienWiersze(indeksMaksymalnegoElementuWiersza, i);
         zamienKolumny(indeksMaksymalnegoElementuKolumny, i);
         std::swap(P[indeksMaksymalnegoElementuKolumny], P[i]);
-
-
         eliminacjaGaussa(i);
+
+        std::cout << "Krok " << i+1 << ": " << std::endl;
+        wypiszMacierz();
     }
-
-
     std::vector<double> x = rozwiazUklad();
     std::vector<double> y = x;
 
@@ -143,7 +161,5 @@ void GaussPelnyWybor::rozwiaz() {
         x[P[i]] = y[i];
 
     }
-
     wypiszRozwiazanie(x);
-
 }

@@ -11,6 +11,7 @@ public:
     GaussWyborKolumny(const std::vector<std::vector<double>>& A, const std::vector<double>& b);
     int znajdzMaksymalnyElement(int kolumna);
     static void daneTestoweKolumny(std::vector<std::vector<double>>& A, std::vector<double>& b);
+    void wypiszMacierz() const;
     void wypiszRozwiazanie(const std::vector<double>& x) override;
     void eliminacjaGaussa(int kolumna) override;
     std::vector<double> rozwiazUklad() override;
