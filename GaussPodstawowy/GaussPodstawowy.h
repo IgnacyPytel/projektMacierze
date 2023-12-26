@@ -10,8 +10,11 @@
 class GaussPodstawowy : public MetodaGaussa {
 public:
 
-    GaussPodstawowy(const std::vector<std::vector<double>>& A, const std::vector<double>& b);
-    static void daneTestowePodstawowy(std::vector<std::vector<double>>& A, std::vector<double>& b);
+    GaussPodstawowy(const std::vector<std::vector<double>>& A,
+                    const std::vector<double>& b);
+
+    static void daneTestowePodstawowy(std::vector<std::vector<double>>& A,
+                                      std::vector<double>& b);
     void wypiszMacierz() const;
     void eliminacjaGaussa(int kolumna) override;
     std::vector<double>  rozwiazUklad() override;

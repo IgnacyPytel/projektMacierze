@@ -5,7 +5,8 @@
 #include "GaussPelnyWybor/GaussPelnyWybor.h"
 
 
-void wprowadzDaneWejsciowe(std::vector<std::vector<double>>& A, std::vector<double>& b) {
+void wprowadzDaneWejsciowe(std::vector<std::vector<double>>& A,
+                           std::vector<double>& b) {
     int iloscRownan;
     std::cout << "Wpisz ilosc rownan: ";
     std::cin >> iloscRownan;
