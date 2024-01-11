@@ -1,6 +1,3 @@
-//
-// Created by pytlu on 18.12.2023.
-//
 
 #ifndef PROJEKTMACIERZE_METODAGAUSSA_H
 #define PROJEKTMACIERZE_METODAGAUSSA_H
@@ -13,7 +10,7 @@ protected:
 
     std::vector<std::vector<double>> A;
     std::vector<double> b;
-    double epsilon = 1e-7;
+    double epsilon = 1e-14;
 public:
 
     virtual void eliminacjaGaussa(int kolumna) = 0;

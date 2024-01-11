@@ -62,16 +62,13 @@ int main() {
                 switch (wyborTypu) {
                     case 1: {
                         GaussPodstawowy::daneTestowePodstawowy(A, b);
-                        std::cout << "wejscie do testow dla podstawowego\n";
                         break;
                     }
                     case 2: {
                         GaussWyborKolumny::daneTestoweKolumny(A, b);
-                        std::cout << "wejscie do testow dla kolumnowego\n";
                         break;
                     }
                     case 3: {
-                        std::cout << "wejscie do testow dla pelnego\n";
                         GaussPelnyWybor::daneTestowePelny(A, b);
                         break;
                     }
@@ -91,8 +88,8 @@ int main() {
                 break;
             }
             case 2: {
-                GaussWyborKolumny gw(A, b);
-                gw.rozwiaz();
+                GaussWyborKolumny gwk(A, b);
+                gwk.rozwiaz();
                 break;
             }
             case 3: {

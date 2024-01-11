@@ -1,6 +1,4 @@
-//
-// Created by pytlu on 18.12.2023.
-//
+
 
 #ifndef PROJEKTMACIERZE_GAUSSPODSTAWOWY_H
 #define PROJEKTMACIERZE_GAUSSPODSTAWOWY_H

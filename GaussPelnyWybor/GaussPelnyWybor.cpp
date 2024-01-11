@@ -1,6 +1,3 @@
-//
-// Created by pytlu on 18.12.2023.
-//
 
 #include "GaussPelnyWybor.h"
 #include <algorithm>
@@ -27,8 +24,8 @@ GaussPelnyWybor::GaussPelnyWybor(const std::vector<std::vector<double>>& A,
 }
 
 void GaussPelnyWybor::wypiszMacierz() const {
-    for (const auto& row : A) {
-        for (const auto& element : row) {
+    for (const auto& wiersz : A) {
+        for (const auto& element : wiersz) {
 
             std::cout << element << "\t";
 
@@ -77,7 +74,7 @@ std::pair<int, int> GaussPelnyWybor::znajdzMaksymalnyElement(int poczatek) {
 void GaussPelnyWybor::wypiszRozwiazanie(const std::vector<double>& x) {
     for (int i = 0; i < x.size(); i++) {
 
-        std::cout << "x" << i << " = " << x[i] << std::endl;
+        std::cout << "x" << i+1 << " = " << x[i] << std::endl;
 
     }
 }
@@ -87,7 +84,7 @@ void GaussPelnyWybor::eliminacjaGaussa(int kolumna) {
 
     for (int k = kolumna + 1; k < rozmiarMacierzy; k++) {
 
-        double c = -A[k][kolumna] / A[kolumna][kolumna];
+        double p = -A[k][kolumna] / A[kolumna][kolumna];
 
         for (int j = kolumna; j < rozmiarMacierzy; j++) {
             if (kolumna == j) {
@@ -96,13 +93,14 @@ void GaussPelnyWybor::eliminacjaGaussa(int kolumna) {
 
             } else {
 
-                A[k][j] += c * A[kolumna][j];
+                A[k][j] += p * A[kolumna][j];
 
             }
         }
-        b[k] += c * b[kolumna];
+        b[k] += p * b[kolumna];
     }
 }
+
 std::vector<double> GaussPelnyWybor::rozwiazUklad() {
 
     unsigned long long int rozmiarMacierzy = A.size();
@@ -123,21 +121,23 @@ std::vector<double> GaussPelnyWybor::rozwiazUklad() {
 
 void GaussPelnyWybor::rozwiaz() {
     unsigned long long int rozmiarMacierzy = A.size();
-    std::vector<int> P(rozmiarMacierzy);
+    // wektor permutacji przechowuje z informacje z swapowaniu wierszy i kolumn miejscami
+    std::vector<int> Permutacje(rozmiarMacierzy);
 
-    for (int i = 0; i < rozmiarMacierzy; i++) {
-
-        P[i] = i;
-
-    }
 
     // sprawdzanie zgodnie z zalozeniem uzywajac epsilona
     for (int i = 0; i < rozmiarMacierzy; i++) {
-        if (std::abs(A[i][i]) <= epsilon) {
-
+        if (std::abs(A[i][i]) < epsilon) {
+            std::cout << "Uwaga: Element na glownej przekatnej jest rowny zero w kroku " << i+1 << std::endl;
             throw std::runtime_error("Element na glownej przekatnej jest rowny zero");
 
         }
+    }
+
+    for (int i = 0; i < rozmiarMacierzy; i++) {
+
+        Permutacje[i] = i;
+
     }
 
     for (int i = 0; i < rozmiarMacierzy; i++) {
@@ -147,18 +147,20 @@ void GaussPelnyWybor::rozwiaz() {
 
         zamienWiersze(indeksMaksymalnegoElementuWiersza, i);
         zamienKolumny(indeksMaksymalnegoElementuKolumny, i);
-        std::swap(P[indeksMaksymalnegoElementuKolumny], P[i]);
+        // zapis informacji o swapowaniu ^^
+        std::swap(Permutacje[indeksMaksymalnegoElementuKolumny], Permutacje[i]);
         eliminacjaGaussa(i);
 
         std::cout << "Krok " << i+1 << ": " << std::endl;
         wypiszMacierz();
     }
     std::vector<double> x = rozwiazUklad();
+    // kopia wektora rozwiazan 
     std::vector<double> y = x;
 
     for (int i = 0; i < rozmiarMacierzy; i++) {
-
-        x[P[i]] = y[i];
+        // dzieki permutacjom mozemy wypisac rozwiazania w odpowiedniej kolejnosci
+        x[Permutacje[i]] = y[i];
 
     }
     wypiszRozwiazanie(x);

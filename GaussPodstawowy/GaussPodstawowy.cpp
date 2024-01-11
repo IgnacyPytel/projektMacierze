@@ -1,6 +1,4 @@
-//
-// Created by pytlu on 18.12.2023.
-//
+
 
 #include "GaussPodstawowy.h"
 #include <algorithm>
@@ -9,12 +7,13 @@
 void GaussPodstawowy::daneTestowePodstawowy(std::vector<std::vector<double>>& A,
                                             std::vector<double>& b) {
     //uklad rownan
-    A = {{2, -2, -2},
-         {5, 2, 3},
-         {-1, 3, 4}};
+    A = {{1, 2, -1, 2},
+         {1, 0, -2, 4},
+         {0, -3, 1.5, 7},
+         {0, -1, 1, 6}};
 
     //wektor wyrazow wolnych
-    b = {-2, 8, 4};
+    b = {0, 4, 0, -1};
 }
 
 GaussPodstawowy::GaussPodstawowy(const std::vector<std::vector<double>>& A,
@@ -24,8 +23,8 @@ GaussPodstawowy::GaussPodstawowy(const std::vector<std::vector<double>>& A,
 }
 
 void GaussPodstawowy::wypiszMacierz() const {
-    for (const auto& row : A) {
-        for (const auto& element : row) {
+    for (const auto& wiersz : A) {
+        for (const auto& element : wiersz) {
 
             std::cout << element << "\t";
 
@@ -37,7 +36,7 @@ void GaussPodstawowy::wypiszMacierz() const {
 void GaussPodstawowy::wypiszRozwiazanie(const std::vector<double>& x) {
     for (int i = 0; i < x.size(); i++) {
 
-        std::cout << "x" << i << " = " << x[i] << std::endl;
+        std::cout << "x" << i+1 << " = " << x[i] << std::endl;
 
     }
 }
@@ -48,7 +47,7 @@ void GaussPodstawowy::eliminacjaGaussa(int kolumna) {
 
     for (int k = kolumna + 1; k < rozmiarMacierzy; k++) {
 
-        double c = -A[k][kolumna] / A[kolumna][kolumna];
+        double p = -A[k][kolumna] / A[kolumna][kolumna];
 
         for (int j = kolumna; j < rozmiarMacierzy; j++) {
             if (kolumna == j) {
@@ -57,12 +56,12 @@ void GaussPodstawowy::eliminacjaGaussa(int kolumna) {
 
             } else {
 
-                A[k][j] += c * A[kolumna][j];
+                A[k][j] += p * A[kolumna][j];
 
             }
         }
 
-        b[k] += c * b[kolumna];
+        b[k] += p * b[kolumna];
 
     }
 }
@@ -88,11 +87,13 @@ std::vector<double> GaussPodstawowy::rozwiazUklad() {
 
 
 void GaussPodstawowy::rozwiaz() {
-
     unsigned long long rozmiarMacierzy = A.size();
 
-
     for (int i = 0; i < rozmiarMacierzy; i++) {
+        if (std::abs(A[i][i]) < epsilon) {
+            std::cout << "Uwaga: Element na glownej przekatnej jest rowny zero w kroku " << i+1 << std::endl;
+            throw std::runtime_error("Element na glownej przekatnej jest rowny zero");
+        }
 
         eliminacjaGaussa(i);
         std::cout << "Krok " << i+1 << ": " << std::endl;
@@ -100,6 +101,5 @@ void GaussPodstawowy::rozwiaz() {
     }
 
     std::vector<double> x = rozwiazUklad();
-
     wypiszRozwiazanie(x);
 }

@@ -1,6 +1,4 @@
-//
-// Created by pytlu on 18.12.2023.
-//
+
 
 #include "GaussWyborKolumny.h"
 #include <iostream>
@@ -25,8 +23,8 @@ GaussWyborKolumny::GaussWyborKolumny(const std::vector<std::vector<double>>& A,
 }
 
 void GaussWyborKolumny::wypiszMacierz() const {
-    for (const auto& row : A) {
-        for (const auto& element : row) {
+    for (const auto& wiersz : A) {
+        for (const auto& element : wiersz) {
 
             std::cout << element << "\t";
 
@@ -54,7 +52,7 @@ int GaussWyborKolumny::znajdzMaksymalnyElement(int kolumna) {
 
 void GaussWyborKolumny::wypiszRozwiazanie(const std::vector<double>& x) {
     for (int i = 0; i < x.size(); i++) {
-        std::cout << "x" << i << " = " << x[i] << std::endl;
+        std::cout << "x" << i+1 << " = " << x[i] << std::endl;
     }
 }
 
@@ -64,7 +62,7 @@ void GaussWyborKolumny::eliminacjaGaussa(int kolumna) {
 
     for (int k = kolumna + 1; k < rozmiarMacierzy; k++) {
 
-        double c = -A[k][kolumna] / A[kolumna][kolumna];
+        double p = -A[k][kolumna] / A[kolumna][kolumna];
 
         for (int j = kolumna; j < rozmiarMacierzy; j++) {
             if (kolumna == j) {
@@ -73,12 +71,12 @@ void GaussWyborKolumny::eliminacjaGaussa(int kolumna) {
 
             } else {
 
-                A[k][j] += c * A[kolumna][j];
+                A[k][j] += p * A[kolumna][j];
 
             }
         }
 
-        b[k] += c * b[kolumna];
+        b[k] += p * b[kolumna];
 
     }
 }
@@ -104,17 +102,19 @@ std::vector<double> GaussWyborKolumny::rozwiazUklad() {
 void GaussWyborKolumny::rozwiaz() {
     unsigned long long rozmiarMacierzy = A.size();
     // sprawdzanie zgodnie z zalozeniem uzywajac epsilona
+
     for (int i = 0; i < rozmiarMacierzy; i++) {
-        if (std::abs(A[i][i]) <= epsilon) {
+        if (std::abs(A[i][i]) < epsilon) {
+            std::cout << "Uwaga: Element na glownej przekatnej jest rowny zero w kroku " << i+1 << std::endl;
             throw std::runtime_error("Element na glownej przekatnej jest rowny zero");
         }
     }
 
     for (int i = 0; i < rozmiarMacierzy; i++) {
 
-        int maxRow = znajdzMaksymalnyElement(i);
-        std::swap(A[maxRow], A[i]);
-        std::swap(b[maxRow], b[i]);
+        int maxWiersz = znajdzMaksymalnyElement(i);
+        std::swap(A[maxWiersz], A[i]);
+        std::swap(b[maxWiersz], b[i]);
 
         eliminacjaGaussa(i);
         std::cout << "Krok " << i+1 << ": " << std::endl;
